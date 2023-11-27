@@ -5,7 +5,7 @@ import TeacherCreator from "./TeacherCreator/TeacherCreator";
 import FacultyUpload from "./TeacherCreator/FacultyUpload";
 import TeacherEditor from "./TeacherEditor";
 
-export default function TeacherTab({teacherList, page, setPage}) {
+export default function TeacherTab({teacherList, schoolList, classroomList, page, setPage, handleAddTeacher, handleEditTeacher}) {
 
   const teacherColumns = [
     {

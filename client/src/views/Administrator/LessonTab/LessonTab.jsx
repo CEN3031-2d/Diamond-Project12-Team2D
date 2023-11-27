@@ -2,16 +2,12 @@ import React, { useState } from 'react';
 import { Table, Input, Button } from 'antd';
 import UnitCreator from '../../ContentCreator/UnitCreator/UnitCreator';
 import UnitEditor from '../../ContentCreator/UnitEditor/UnitEditor';
-import React, { useState } from 'react';
 import LessonModuleActivityCreator from '../../ContentCreator/LessonModuleCreator/LessonModuleCreator';
 import '../../ContentCreator/ContentCreator.less';
 import LessonEditor from '../../ContentCreator/LessonEditor/LessonEditor';
 
 export default function LessonTab({learningStandardList, gradeList, setLessonModuleList, page, setPage, searchParams, tab}) {
-    const [viewing, setViewing] = useState(null);
-    const [page, setPage] = useState(1);
-
-
+  const [viewing, setViewing] = useState(null)
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
 
