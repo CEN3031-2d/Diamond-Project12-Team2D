@@ -1,9 +1,16 @@
 import { Table } from 'antd';
 import UnitCreator from '../../ContentCreator/UnitCreator/UnitCreator';
 import UnitEditor from '../../ContentCreator/UnitEditor/UnitEditor';
+import React, { useState } from 'react';
+import LessonModuleActivityCreator from '../../ContentCreator/LessonModuleCreator/LessonModuleCreator';
+import '../../ContentCreator/ContentCreator.less';
+import LessonEditor from '../../ContentCreator/LessonEditor/LessonEditor';
 
-export default function LessonTab({learningStandardList, gradeList, page, setPage}) {
-    
+export default function LessonTab({learningStandardList, gradeList, setLessonModuleList, searchParams, tab}) {
+    const [viewing, setViewing] = useState(null);
+    const [page, setPage] = useState(1);
+
+
     const lessonColumns = [
         {
             title: 'Unit',
@@ -23,6 +30,13 @@ export default function LessonTab({learningStandardList, gradeList, page, setPag
             editable: true,
             width: '22.5%',
             align: 'left',
+            render: (_, key) => (
+                <LessonEditor 
+                    learningStandard={key}
+                    viewing={viewing}
+                    setViewing={setViewing}
+                />
+            )
         },
         {
             title: 'Description',
@@ -31,15 +45,7 @@ export default function LessonTab({learningStandardList, gradeList, page, setPag
             editable: true,
             width: '22.5%',
             align: 'left',
-        },
-        {
-            title: 'View',
-            key: 'view',
-            editable: true,
-            width: '10%',
-            align: 'left',
-        },
-    
+        }    
     ];
 
   return (
@@ -52,10 +58,13 @@ export default function LessonTab({learningStandardList, gradeList, page, setPag
         <div id='content-creator-table-container'>
         <div id='content-creator-btn-container'>
             <UnitCreator gradeList = {gradeList} />
-            {/* unable to get other button to work, think its result from not getting table to load (so replacement button) */}
-            <button onClick = {null} id = "add-unit-btn">
-            + Add Lesson
-            </button>
+            <LessonModuleActivityCreator
+                setLessonModuleList={setLessonModuleList}
+                viewing={viewing}
+                setViewing={setViewing}
+                tab={tab}
+                page={page}
+              />
         </div>
         <Table
             columns = {lessonColumns}

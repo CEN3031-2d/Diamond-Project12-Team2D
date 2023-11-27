@@ -1,6 +1,8 @@
-import { Table } from 'antd';
+import { Table } from "antd";
+import ClassroomCreator from "./ClassroomCreator/ClassroomCreator";
+import ClassroomEditor from "./ClassroomEditor";
 
-export default function ClassroomTab({classroomList, page, setPage}) {
+export default function ClassroomTab({classroomList, gradeList, schoolList, mentorList, studentList, page, setPage, handleAddClassroom, handleEditClassroom}) {
     const classroomColumns = [
         {
             title: 'Classroom Name',
@@ -9,6 +11,8 @@ export default function ClassroomTab({classroomList, page, setPage}) {
             editable: true,
             width: '22.5%',
             align: 'left',
+            defaultSortOrder: 'ascend',
+            sorter: (a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase())
         },
         {
             title: 'School',
@@ -16,6 +20,7 @@ export default function ClassroomTab({classroomList, page, setPage}) {
             editable: true,
             width: '22.5%',
             align: 'left',
+            sorter: (a, b) => a.school.name.toLowerCase().localeCompare(b.school.name.toLowerCase()),
             render: (_, key) => (
                 <span>{key.school != null ? key.school.name : <i>No school provided</i>}</span>
             ),
@@ -28,7 +33,7 @@ export default function ClassroomTab({classroomList, page, setPage}) {
             align: 'left',
             render: (_, key) => (
                 <span>
-                    {key.mentors != null ? 
+                    {key.mentors != null && key.mentors.length != 0 ? 
                         key.mentors.map(mentor => {
                             return <li>{mentor.first_name} {mentor.last_name}<br /></li>
                         }) 
@@ -37,11 +42,20 @@ export default function ClassroomTab({classroomList, page, setPage}) {
             ),
         },
         {
-            title: 'View Details',
+            title: 'Edit Classroom Details',
             dataIndex: 'view',
             key: 'view',
             width: '22.5%',
             align: 'left',
+            render: (_, key) => (
+                <ClassroomEditor
+                    id={key.id}
+                    schoolList={schoolList}
+                    mentorList={mentorList}
+                    gradeList={gradeList}
+                    handleEditClassroom={handleEditClassroom}
+                />
+            )
         },
     ];
 
@@ -54,9 +68,12 @@ export default function ClassroomTab({classroomList, page, setPage}) {
           </div>
           <div id='content-creator-table-container'>
             <div id='content-creator-btn-container'>
-            <button onClick = {null} id = "add-unit-btn">
-                + Add Classroom
-              </button>
+            <ClassroomCreator
+            classroomList={classroomList}
+            gradeList={gradeList}
+            schoolList={schoolList}
+            handleAddClassroom={handleAddClassroom}
+          ></ClassroomCreator>
             </div>
             <Table
               columns = {classroomColumns}
@@ -65,7 +82,6 @@ export default function ClassroomTab({classroomList, page, setPage}) {
               rowKey = 'id'
               onChange = {(Pagination) => {
                 setPage(Pagination.current);
-                setSearchParams({tab, page: Pagination.current});
               }}
               pagination = {{current: page ? page : 1}}
             ></Table>
