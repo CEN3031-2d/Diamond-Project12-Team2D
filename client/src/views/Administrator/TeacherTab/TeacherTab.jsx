@@ -1,7 +1,10 @@
-
 import React, { useState } from 'react';
 import { Table, Input, Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import TeacherCreator from "./TeacherCreator/TeacherCreator";
+import FacultyUpload from "./TeacherCreator/FacultyUpload";
+import TeacherEditor from "./TeacherEditor";
+
 export default function TeacherTab({teacherList, page, setPage}) {
 
   const teacherColumns = [
@@ -72,6 +75,20 @@ export default function TeacherTab({teacherList, page, setPage}) {
       ),
     },
     {
+          title: 'Edit Teacher Details',
+          dataIndex: 'view',
+          key: 'view',
+          width: '22.5%',
+          align: 'left',
+          render: (_, key) => (
+            <TeacherEditor
+              id={key.id}
+              schoolList={schoolList}
+              classroomList={classroomList}
+              handleEditTeacher={handleEditTeacher}
+            />)
+      },
+    {
       title: 'Edit Students',
       dataIndex: 'view',
       key: 'view',
@@ -90,7 +107,6 @@ export default function TeacherTab({teacherList, page, setPage}) {
   }
 
   const navigate = useNavigate();
-
   
     return (
         <div>
@@ -101,12 +117,15 @@ export default function TeacherTab({teacherList, page, setPage}) {
           </div>
           <div id='content-creator-table-container'>
             <div id='content-creator-btn-container'>
-            <button onClick = {null} id = "add-unit-btn">
-                + Add Teacher
-              </button>
-              <button onClick = {null} id = "add-unit-btn">
-                + Upload Faculty List
-              </button>
+            <TeacherCreator
+            TeacherList={teacherList}
+            schoolList={schoolList}
+            handleAddTeacher={handleAddTeacher}
+          ></TeacherCreator>
+             <FacultyUpload
+             schoolList = {schoolList}
+             handleAddTeacher={handleAddTeacher}
+             ></FacultyUpload>
             </div>
             <Table
               columns = {teacherColumns}

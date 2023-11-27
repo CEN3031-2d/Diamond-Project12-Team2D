@@ -6,12 +6,16 @@ import "./OrganizationCreator/OrganizationCreator";
 import { useSearchParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import OrganizationCreator from "./OrganizationCreator/OrganizationCreator";
+import OrganizationEditor from "./OrganizationEditor";
 
 export default function OrganizationTab({
   organizationList,
+  classroomList,
+  mentorList,
   page,
   setPage,
   handleAddOrganization,
+  handleEditOrganization
 }) {
 
   const organizationColumns = [
@@ -65,6 +69,20 @@ export default function OrganizationTab({
       align: "left",
       render: (_, key) => <p>{key.mentors.length}</p>,
     },
+    {
+        title: "Edit School Details",
+        dataIndex: "view",
+        key: "view",
+        width: "22.5%",
+        align: "left",
+        render: (_, key) => <OrganizationEditor 
+            id={key.id} 
+            schoolName={key.name} 
+            classroomList={classroomList} 
+            mentorList={mentorList}
+            handleEditOrganization={handleEditOrganization}
+          />
+      },
     {
       title: "Edit Students",
       dataIndex: "view",

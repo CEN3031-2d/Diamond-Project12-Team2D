@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Table, Input, Button } from "antd"
 import { useNavigate } from 'react-router-dom';
+import ClassroomCreator from "./ClassroomCreator/ClassroomCreator";
+import ClassroomEditor from "./ClassroomEditor";
 
-export default function ClassroomTab({classroomList, page, setPage}) {
+export default function ClassroomTab({classroomList, gradeList, schoolList, mentorList, studentList, page, setPage, handleAddClassroom, handleEditClassroom}) {
   const classroomColumns = [
     {
       title: 'Classroom Name',
@@ -65,6 +67,22 @@ export default function ClassroomTab({classroomList, page, setPage}) {
       ),
     },
     {
+          title: 'Edit Classroom Details',
+          dataIndex: 'view',
+          key: 'view',
+          width: '22.5%',
+          align: 'left',
+          render: (_, key) => (
+              <ClassroomEditor
+                  id={key.id}
+                  schoolList={schoolList}
+                  mentorList={mentorList}
+                  gradeList={gradeList}
+                  handleEditClassroom={handleEditClassroom}
+              />
+          )
+      },
+    {
       title: 'Edit Students',
       dataIndex: 'view',
       key: 'view',
@@ -92,9 +110,12 @@ export default function ClassroomTab({classroomList, page, setPage}) {
           </div>
           <div id='content-creator-table-container'>
             <div id='content-creator-btn-container'>
-            <button onClick = {null} id = "add-unit-btn">
-                + Add Classroom
-              </button>
+            <ClassroomCreator
+            classroomList={classroomList}
+            gradeList={gradeList}
+            schoolList={schoolList}
+            handleAddClassroom={handleAddClassroom}
+          ></ClassroomCreator>
             </div>
             <Table
               columns = {classroomColumns}
@@ -103,7 +124,6 @@ export default function ClassroomTab({classroomList, page, setPage}) {
               rowKey = 'id'
               onChange = {(Pagination) => {
                 setPage(Pagination.current);
-                setSearchParams({tab, page: Pagination.current});
               }}
               pagination = {{current: page ? page : 1}}
             ></Table>
