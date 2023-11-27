@@ -1,64 +1,106 @@
-import { Table } from "antd";
+import React, { useState } from "react";
+import { Table, Input, Button } from "antd"
+import { useNavigate } from 'react-router-dom';
 import ClassroomCreator from "./ClassroomCreator/ClassroomCreator";
 import ClassroomEditor from "./ClassroomEditor";
 
 export default function ClassroomTab({classroomList, gradeList, schoolList, mentorList, studentList, page, setPage, handleAddClassroom, handleEditClassroom}) {
-    const classroomColumns = [
-        {
-            title: 'Classroom Name',
-            dataIndex: 'name',
-            key: 'name',
-            editable: true,
-            width: '22.5%',
-            align: 'left',
-            defaultSortOrder: 'ascend',
-            sorter: (a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase())
-        },
-        {
-            title: 'School',
-            key: 'school',
-            editable: true,
-            width: '22.5%',
-            align: 'left',
-            sorter: (a, b) => a.school.name.toLowerCase().localeCompare(b.school.name.toLowerCase()),
-            render: (_, key) => (
-                <span>{key.school != null ? key.school.name : <i>No school provided</i>}</span>
-            ),
-        },
-        {
-            title: 'Teachers',
-            key: 'mentors',
-            editable: true,
-            width: '22.5%',
-            align: 'left',
-            render: (_, key) => (
-                <span>
-                    {key.mentors != null && key.mentors.length != 0 ? 
-                        key.mentors.map(mentor => {
-                            return <li>{mentor.first_name} {mentor.last_name}<br /></li>
-                        }) 
-                        : <i>No mentors assigned</i>}
-                </span>
-            ),
-        },
-        {
-            title: 'Edit Classroom Details',
-            dataIndex: 'view',
-            key: 'view',
-            width: '22.5%',
-            align: 'left',
-            render: (_, key) => (
-                <ClassroomEditor
-                    id={key.id}
-                    schoolList={schoolList}
-                    mentorList={mentorList}
-                    gradeList={gradeList}
-                    handleEditClassroom={handleEditClassroom}
-                />
-            )
-        },
-    ];
+  const classroomColumns = [
+    {
+      title: 'Classroom Name',
+      dataIndex: 'name',
+      key: 'name',
+      editable: true,
+      width: '22.5%',
+      align: 'left',
+      // Apply filter directly on this column
+      onFilter: (value, record) =>
+        record.name.toLowerCase().includes(value.toLowerCase()),
+      // Add search functionality for this column
+      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+        <div style={{ padding: 8 }}>
+          <Input
+            placeholder="Search Classroom Name"
+            value={selectedKeys[0]}
+            onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+            onPressEnter={() => confirm()}
+            style={{ width: 188, marginBottom: 8, display: 'block' }}
+          />
+          <Button
+            type="primary"
+            onClick={() => confirm()}
+            size="small"
+            style={{ width: 90, marginRight: 8 }}
+          >
+            Search
+          </Button>
+          <Button onClick={() => clearFilters()} size="small" style={{ width: 90 }}>
+            Reset
+          </Button>
+        </div>
+      ),
+    },
+    {
+      title: 'School',
+      key: 'school',
+      editable: true,
+      width: '22.5%',
+      align: 'left',
+      render: (_, key) => (
+        <span>{key.school != null ? key.school.name : <i>No school provided</i>}</span>
+      ),
+    },
+    {
+      title: 'Teachers',
+      key: 'mentors',
+      editable: true,
+      width: '22.5%',
+      align: 'left',
+      render: (_, key) => (
+        <span>
+          {key.mentors != null ?
+            key.mentors.map(mentor => {
+              return <li>{mentor.first_name} {mentor.last_name}<br /></li>
+            })
+            : <i>No mentors assigned</i>}
+        </span>
+      ),
+    },
+    {
+          title: 'Edit Classroom Details',
+          dataIndex: 'view',
+          key: 'view',
+          width: '22.5%',
+          align: 'left',
+          render: (_, key) => (
+              <ClassroomEditor
+                  id={key.id}
+                  schoolList={schoolList}
+                  mentorList={mentorList}
+                  gradeList={gradeList}
+                  handleEditClassroom={handleEditClassroom}
+              />
+          )
+      },
+    {
+      title: 'Edit Students',
+      dataIndex: 'view',
+      key: 'view',
+      width: '22.5%',
+      align: 'left',
+      render: (_, classroom) => (
+        <Button type="link" onClick={() => handleViewDetails(classroom.id)}>
+          Edit Students
+        </Button>
+      ),
+    },
+  ];
 
+  const navigate = useNavigate();
+
+  function handleViewDetails(classroomID){
+    navigate(`/ClassroomAdmin/${classroomID}`, { state: { value: 1 } });
+  }
     return (
         <div>
             <div id='page-header'>

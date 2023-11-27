@@ -20,6 +20,9 @@ import ForgetPassword from './views/TeacherLogin/ForgetPassword';
 import ResetPassword from './views/TeacherLogin/ResetPassword';
 import TeacherLogin from './views/TeacherLogin/TeacherLogin';
 import AdminDashboard from "./views/Administrator/AdminDashboard";
+import OrganizationDashboard from "./views/Administrator/OrganizationTab/OrganizationDashboard/OrganizationDashboard";
+import TeacherDashboard from "./views/Administrator/TeacherTab/TeacherDashboard/TeacherDashboard";
+import ClassroomAdmin from "./views/Administrator/ClassroomAdmin/ClassroomAdmin";
 const App = () => {
   return (
     <div>
@@ -38,6 +41,24 @@ const App = () => {
             <PrivateRoute>
                <AdminDashboard />
             </PrivateRoute>}/>
+        <Route 
+          path='/TeacherDashboard/:id' 
+          element={
+            <PrivateRoute>
+               <TeacherDashboard />
+            </PrivateRoute>}/>
+        <Route 
+          path='/OrganizationDashboard/:id' 
+          element={
+            <PrivateRoute>
+               <OrganizationDashboard />
+            </PrivateRoute>}/> 
+        <Route 
+          path='/ClassroomAdmin/:id' 
+          element={
+            <PrivateRoute>
+               <ClassroomAdmin />
+            </PrivateRoute>}/> 
         <Route
           path='/report'
           element={

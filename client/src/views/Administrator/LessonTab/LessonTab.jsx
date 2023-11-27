@@ -1,4 +1,5 @@
-import { Table } from 'antd';
+import React, { useState } from 'react';
+import { Table, Input, Button } from 'antd';
 import UnitCreator from '../../ContentCreator/UnitCreator/UnitCreator';
 import UnitEditor from '../../ContentCreator/UnitEditor/UnitEditor';
 import React, { useState } from 'react';
@@ -6,47 +7,82 @@ import LessonModuleActivityCreator from '../../ContentCreator/LessonModuleCreato
 import '../../ContentCreator/ContentCreator.less';
 import LessonEditor from '../../ContentCreator/LessonEditor/LessonEditor';
 
-export default function LessonTab({learningStandardList, gradeList, setLessonModuleList, searchParams, tab}) {
+export default function LessonTab({learningStandardList, gradeList, setLessonModuleList, page, setPage, searchParams, tab}) {
     const [viewing, setViewing] = useState(null);
     const [page, setPage] = useState(1);
 
 
-    const lessonColumns = [
-        {
-            title: 'Unit',
-            dataIndex: 'unit',
-            key: 'unit',
-            editable: true,
-            width: '22.5%',
-            align: 'left',
-            render: (_, key) => (
-                <UnitEditor id={key.unit.id} unitName={key.unit.name} linkBtn={true} />
-            ),
-        },
-        {
-            title: 'Lesson',
-            dataIndex: 'name',
-            key: 'name',
-            editable: true,
-            width: '22.5%',
-            align: 'left',
-            render: (_, key) => (
-                <LessonEditor 
-                    learningStandard={key}
-                    viewing={viewing}
-                    setViewing={setViewing}
-                />
-            )
-        },
-        {
-            title: 'Description',
-            dataIndex: 'expectations',
-            key: 'description',
-            editable: true,
-            width: '22.5%',
-            align: 'left',
-        }    
-    ];
+  const [searchText, setSearchText] = useState('');
+  const [searchedColumn, setSearchedColumn] = useState('');
+
+  const lessonColumns = [
+    {
+      title: 'Unit',
+      dataIndex: 'unit',
+      key: 'unit',
+      editable: true,
+      width: '22.5%',
+      align: 'left',
+      render: (_, key) => (
+        <UnitEditor id={key.unit.id} unitName={key.unit.name} linkBtn={true} />
+      ),
+    },
+    {
+      title: 'Lesson',
+      dataIndex: 'name',
+      key: 'name',
+      editable: true,
+      width: '22.5%',
+      align: 'left',
+      // Apply filter directly on this column
+      onFilter: (value, record) => record.name.toLowerCase().includes(value.toLowerCase()),
+      // Add search functionality for this column
+      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+        <div style={{ padding: 8 }}>
+          <Input
+            placeholder="Search Lesson Name"
+            value={selectedKeys[0]}
+            onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+            onPressEnter={() => confirm()}
+            style={{ width: 188, marginBottom: 8, display: 'block' }}
+          />
+          <Button
+            type="primary"
+            onClick={() => confirm()}
+            size="small"
+            style={{ width: 90, marginRight: 8 }}
+          >
+            Search
+          </Button>
+          <Button onClick={() => clearFilters()} size="small" style={{ width: 90 }}>
+            Reset
+          </Button>
+        </div>
+      ),
+      render: (_, key) => (
+              <LessonEditor 
+                  learningStandard={key}
+                  viewing={viewing}
+                  setViewing={setViewing}
+              />
+          )
+    },
+    {
+      title: 'Description',
+      dataIndex: 'expectations',
+      key: 'description',
+      editable: true,
+      width: '22.5%',
+      align: 'left',
+    },
+    {
+      title: 'View',
+      key: 'view',
+      editable: true,
+      width: '10%',
+      align: 'left',
+    },
+  ];
 
   return (
     <div>
