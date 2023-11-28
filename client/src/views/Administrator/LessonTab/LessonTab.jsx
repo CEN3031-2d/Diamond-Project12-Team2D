@@ -8,8 +8,6 @@ import LessonEditor from '../../ContentCreator/LessonEditor/LessonEditor';
 
 export default function LessonTab({learningStandardList, gradeList, setLessonModuleList, page, setPage, searchParams, tab}) {
   const [viewing, setViewing] = useState(null)
-  const [searchText, setSearchText] = useState('');
-  const [searchedColumn, setSearchedColumn] = useState('');
 
   const lessonColumns = [
     {
@@ -19,6 +17,10 @@ export default function LessonTab({learningStandardList, gradeList, setLessonMod
       editable: true,
       width: '22.5%',
       align: 'left',
+      sorter: {
+        compare: (a, b) => a.unit.name.toLowerCase().localeCompare(b.unit.name.toLowerCase()),
+        multiple: 2
+      },
       render: (_, key) => (
         <UnitEditor id={key.unit.id} unitName={key.unit.name} linkBtn={true} />
       ),
@@ -30,6 +32,10 @@ export default function LessonTab({learningStandardList, gradeList, setLessonMod
       editable: true,
       width: '22.5%',
       align: 'left',
+      sorter: {
+        compare: (a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
+        multiple: 1
+      },
       // Apply filter directly on this column
       onFilter: (value, record) => record.name.toLowerCase().includes(value.toLowerCase()),
       // Add search functionality for this column
@@ -69,13 +75,6 @@ export default function LessonTab({learningStandardList, gradeList, setLessonMod
       key: 'description',
       editable: true,
       width: '22.5%',
-      align: 'left',
-    },
-    {
-      title: 'View',
-      key: 'view',
-      editable: true,
-      width: '10%',
       align: 'left',
     },
   ];

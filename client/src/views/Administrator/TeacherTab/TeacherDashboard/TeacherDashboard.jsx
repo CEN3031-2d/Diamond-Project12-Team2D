@@ -3,8 +3,8 @@ import {
   getMentor,
   getClassrooms,
   getSchoolClassrooms,
-  getSchoolID,
-  getMentorID,
+  getSchool,
+  getTeacher,
   getAllClassrooms,
 } from "../../../../Utils/requests";
 import { message } from "antd";
@@ -41,7 +41,7 @@ export default function TeacherDashboard(props) {
     const fetchData = async () => {
       try {
         console.log(id);
-        const mentorResponse = await getMentorID(id);
+        const mentorResponse = await getTeacher(id);
         const classroomsResponse = await getAllClassrooms();
 
         const mentorClassroomIDs = mentorResponse.data.classrooms.map(

@@ -13,7 +13,7 @@ export default function TeacherEditor({ id, schoolList, classroomList, handleEdi
     const res = await getTeacher(id);
     setFirstName(res.data.first_name);
     setLastName(res.data.last_name);
-    setSchool(res.data.school.id);
+    setSchool(res.data.school != null && res.data.school != undefined ? res.data.school.id : "");
     setClassrooms(res.data.classrooms.map(classroom => classroom.id))
   };
 

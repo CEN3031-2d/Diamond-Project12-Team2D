@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Button, Form, Input, message, Modal, Table } from "antd";
-import { addOrganization } from "../../../Utils/requests";
-import { getUser } from "../../../Utils/AuthRequests";
+import React from "react";
+import { Button, Input, Table } from "antd";
 import "./OrganizationCreator/OrganizationCreator";
-import { useSearchParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import OrganizationCreator from "./OrganizationCreator/OrganizationCreator";
 import OrganizationEditor from "./OrganizationEditor";
@@ -26,6 +23,8 @@ export default function OrganizationTab({
       editable: true,
       width: "22.5%",
       align: "left",
+      sorter: (a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
+      defaultSortOrder: "ascend",
       // Apply filter directly on this column
       onFilter: (value, record) =>
         record.name.toLowerCase().includes(value.toLowerCase()),
@@ -52,6 +51,7 @@ export default function OrganizationTab({
           </Button>
         </div>
       ),
+
     },
     {
       title: "Number of Classrooms",

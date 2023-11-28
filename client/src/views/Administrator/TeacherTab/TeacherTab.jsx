@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Table, Input, Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import TeacherCreator from "./TeacherCreator/TeacherCreator";
@@ -15,6 +15,10 @@ export default function TeacherTab({teacherList, schoolList, classroomList, page
       editable: true,
       width: '22.5%',
       align: 'left',
+      sorter: {
+        compare: (a, b) => a.first_name.toLowerCase().localeCompare(b.first_name.toLowerCase()),
+        multiple: 1
+      },
     },
     {
       title: 'Last Name',
@@ -23,6 +27,11 @@ export default function TeacherTab({teacherList, schoolList, classroomList, page
       editable: true,
       width: '22.5%',
       align: 'left',
+      sorter: {
+        compare: (a, b) => a.last_name.toLowerCase().localeCompare(b.last_name.toLowerCase()),
+        multiple: 2
+      },
+      defaultSortOrder: "ascend",
       // Apply filter directly on this column
       onFilter: (value, record) =>
         record.last_name.toLowerCase().includes(value.toLowerCase()),
@@ -68,9 +77,22 @@ export default function TeacherTab({teacherList, schoolList, classroomList, page
       editable: true,
       width: '22.5%',
       align: 'left',
+      sorter: {
+        compare: (a, b) => {
+          if (a.school == null || a.school.name == undefined) {
+            return 1
+          }
+          if (b.school == null || b.school.name == undefined) {
+            return -1
+          }
+
+          return a.school.name.toLowerCase().localeCompare(b.school.name.toLowerCase())
+        },
+        multiple: 2
+      },
       render: (_, key) => (
         <span>
-          {key.school != null ? key.school.name : <i>No school provided</i>}
+          {key.school != null && key.school.name != undefined ? key.school.name : <i>No school assigned</i>}
         </span>
       ),
     },
