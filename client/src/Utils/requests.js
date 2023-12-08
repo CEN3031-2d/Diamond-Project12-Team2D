@@ -736,14 +736,6 @@ export const getAllSchools = async () =>
     auth: true,
     error: 'Classrooms could not be retrieved.',
   });
-
-  export const getSchoolID = async (id) =>
-    makeRequest({
-      method: GET,
-      path: `${server}/schools/${id}`,
-      auth: true,
-      error: 'School could not be retrieved.',
-  });
   
 export const getSchool = async (id) =>
   makeRequest({
@@ -774,14 +766,6 @@ export const updateSchool = async (
       auth: true,
       error: 'Failed to update school',
     });
-
-export const getMentorID = async (id) =>
-  makeRequest({
-    method: GET,
-    path: `${server}/mentors/${id}`,
-    auth: true,
-    error: 'Teacher could not be retrieved.',
-  });
 
 export const getTeacher = async (id) =>
   makeRequest({

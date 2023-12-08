@@ -3,7 +3,7 @@ import {
   getMentor,
   getClassrooms,
   getSchoolClassrooms,
-  getSchoolID,
+  getSchool,
 } from "../../../../Utils/requests";
 import { message } from "antd";
 import "../../../Mentor/Dashboard/Dashboard.less";
@@ -36,7 +36,7 @@ export default function OrganizationDashboard(props) {
     const fetchData = async () => {
       try {
         const classroomsResponse = await getSchoolClassrooms(id);
-        const organizationResponse = await getSchoolID(id);
+        const organizationResponse = await getSchool(id);
         setClassrooms(classroomsResponse.data);
         setOrganization(organizationResponse);
       } catch (error) {

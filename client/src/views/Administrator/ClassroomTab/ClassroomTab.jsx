@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Table, Input, Button } from "antd"
 import { useNavigate } from 'react-router-dom';
 import ClassroomCreator from "./ClassroomCreator/ClassroomCreator";
@@ -13,6 +13,11 @@ export default function ClassroomTab({classroomList, gradeList, schoolList, ment
       editable: true,
       width: '22.5%',
       align: 'left',
+      sorter: {
+        compare: (a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
+        multiple: 1
+      },
+      defaultSortOrder: "ascend",
       // Apply filter directly on this column
       onFilter: (value, record) =>
         record.name.toLowerCase().includes(value.toLowerCase()),
@@ -46,6 +51,10 @@ export default function ClassroomTab({classroomList, gradeList, schoolList, ment
       editable: true,
       width: '22.5%',
       align: 'left',
+      sorter: {
+        compare: (a, b) => a.school.name.toLowerCase().localeCompare(b.school.name.toLowerCase()),
+        multiple: 2
+      },
       render: (_, key) => (
         <span>{key.school != null ? key.school.name : <i>No school provided</i>}</span>
       ),
@@ -58,11 +67,11 @@ export default function ClassroomTab({classroomList, gradeList, schoolList, ment
       align: 'left',
       render: (_, key) => (
         <span>
-          {key.mentors != null ?
+          {key.mentors != null && key.mentors.length != 0 ?
             key.mentors.map(mentor => {
               return <li>{mentor.first_name} {mentor.last_name}<br /></li>
             })
-            : <i>No mentors assigned</i>}
+            : <i>No teachers assigned</i>}
         </span>
       ),
     },
