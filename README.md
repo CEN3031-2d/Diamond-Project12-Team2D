@@ -7,6 +7,57 @@ Cloud-based programming interface
 ![Deploy Staging](https://github.com/STEM-C/CaSMM/workflows/Deploy%20Staging/badge.svg)
 ![Deploy Production](https://github.com/STEM-C/CaSMM/workflows/Deploy%20Production/badge.svg)
 
+## What's new?
+
+This fork of CASMM was worked on by CEN3031 Team 2d. Our goal with this fork was to begin implementing a new Administrator role in the backend and provide an intuitive web frontend for administrators to manage all aspects of their schools.
+
+### Features Implemented
+
+- Administrator role created in the backend.
+- Administrators gain access to the Administrator Dashboard upon logging in.
+  - Schools, classrooms, teachers, students, and lessons can all be managed through the Administrator dashboard.
+  - This includes creating, viewing, and editing associated database entries.
+  - Faculty and student rosters can be uploaded as CSV files to easily populate schools or classrooms.
+  - The dashboard features sorting, searching, and pagination to help administrators find what they need quickly. 
+
+### Screenshots
+
+<details>
+<summary>Click to view screenshots</summary>
+
+#### Administrator Dashboard
+![Administrator Dashboard](docs/admin_dashboard.png)
+
+#### Creating new database entries
+![Schol Creator](docs/school_creator.png)
+
+#### Editing Existing database entries (`Edit Details`)
+![School Editor](docs/school_editor.png)
+
+#### Editing students assigned to classrooms in a specific school (`Edit Students`)
+![School Studnet Editor](docs/school_students.png)
+
+#### Faculty Upload
+![Faculty Upload Window](docs/faculty_upload.png)
+
+</details>
+
+### Running locally
+
+If you have never run CASMM on your local machine, you can follow the directions below from the original repo to run the frontend using yarn and the backend using Docker. 
+
+If you have run CASMM before, you will need to delete your casmm-db-dev container and rerun Docker Compose. This way, your local development database will be rebuilt to include the Administrator role and a relation between schools and administrators. We have also added a sample Admin user with username `admin` and password `easypassword`.
+
+### Remaining Work
+
+Our sprints during the Fall 2023 semester mostly focused on creating the interface for administrators to interact with the database. This work is done, however there is still work that must be put in on the backend before this can be put into production. Currently, our admin dashboard requests every school, classroom, teacher, and lesson available in the database. This is insecure because administrators should only be able to access data associated with schools that they belong to. We have added a relation between administrators and schools, but currently no queries utilize this. Checking the administrator's associated schools to only provide them with relevant data could be implemented as a Strapi policy.
+
+We also have a tab in the administrator dashboard dedicated to moderation tasks. Since moderation was not implemented when we started designing the dashboard, this tab has some placeholder tables and buttons. If the work for the moderation team gets merged in, this tab could be populated with content requiring a moderator's attention.
+
+### Credits
+
+Our changes brought in no new libraries or dependencies compared to upstream CASMM. You can read more about the libraries used for each component of CASMM below.
+
 <br/>
 
 ## Application
